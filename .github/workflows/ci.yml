@@ -14,28 +14,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary selenium
 
-      - name: Install Node.js (se precisar)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Node dependencies
+      - name: Start local server (exemplo)
         run: |
-          npm install
-
-      - name: Start local server
-        run: |
-          npm run dev &
-          sleep 5
+          # Substitua pelo comando real, se precisar subir API/app local:
+          # python app.py &
+          # sleep 5
+          echo "Nenhum servidor configurado"
 
       - name: Start Xvfb
         run: |
