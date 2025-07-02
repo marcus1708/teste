@@ -24,12 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary selenium
 
-      - name: Start local server (exemplo)
+      - name: Start local server
         run: |
-          # Substitua pelo comando real, se precisar subir API/app local:
-          # python app.py &
-          # sleep 5
-          echo "Nenhum servidor configurado"
+          cd src
+          python3 -m http.server 8080 &
+          cd ..
+          sleep 5
 
       - name: Start Xvfb
         run: |
