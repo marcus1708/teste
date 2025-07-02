@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,19 +25,18 @@ jobs:
           pip install robotframework
           pip install robotframework-seleniumlibrary
           pip install selenium
-          pip install webdrivermanager
-          webdrivermanager chrome --linkpath /usr/local/bin
 
-      - name: Start Xvfb
+      - name: Install Chrome and get version
+        id: chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb
-          Xvfb :99 &
-          export DISPLAY=:99
-        shell: bash
+          sudo apt-get install -y wget unzip
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+          echo "CHROME_VERSION=$CHROME_VERSION" >> $GITHUB_ENV
 
-      - name: Run Robot Framework tests
-        env:
-          DISPLAY: :99
+      - name: Install matching ChromeDriver
         run: |
-          robot Testes/
+          echo "Detected Chrome version: $CHROME_VERSION"
+          wget https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip
+          unzip
+
