@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${url}    file:///home/marcus/Área de trabalho/Robot/src/index.html
+${url}    http://localhost:8000/index.html
 ${file}    /home/marcus/Área de trabalho/Robot/modelo.txt
 *** Keywords ***
 
