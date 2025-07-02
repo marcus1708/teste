@@ -39,4 +39,9 @@ jobs:
           echo "Detected Chrome version: $CHROME_VERSION"
           wget https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip
           unzip
-
+          
+      - name: Run Robot Framework tests
+        env:
+          DISPLAY: :99
+        run: |
+          robot Testes/
