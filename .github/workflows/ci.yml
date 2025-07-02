@@ -12,23 +12,30 @@ jobs:
 
     steps:
       - name: Checkout repository
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install robotframework robotframework-seleniumlibrary selenium
 
-      - name: Start your app
+      - name: Install Node.js (se precisar)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node dependencies
         run: |
-          # Exemplo: suba seu app local (substitua pelo seu comando real)
-          # Ex: npm install && npm run dev
-          # Ou: python app.py &
-          echo "Suba seu servidor aqui"
+          npm install
+
+      - name: Start local server
+        run: |
+          npm run dev &
+          sleep 5
 
       - name: Start Xvfb
         run: |
@@ -37,7 +44,7 @@ jobs:
           Xvfb :99 &
         shell: bash
 
-      - name: Run tests
+      - name: Run Robot Framework tests
         env:
           DISPLAY: :99
         run: |
