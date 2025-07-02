@@ -26,22 +26,29 @@ jobs:
           pip install robotframework-seleniumlibrary
           pip install selenium
 
-      - name: Install Chrome and get version
-        id: chrome
+      - name: Install Chrome and ChromeDriver
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-          echo "CHROME_VERSION=$CHROME_VERSION" >> $GITHUB_ENV
-
-      - name: Install matching ChromeDriver
-        run: |
-          echo "Detected Chrome version: $CHROME_VERSION"
           wget https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip
-          unzip
-          
-      - name: Run Robot Framework tests
+          unzip chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
+          chromedriver --version
+
+      - name: Start Xvfb
+        run: |
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+        shell: bash
+
+      - name: Run Robot Framework tests (headless)
         env:
           DISPLAY: :99
+          ROBOT_SYSLOG_FILE: output/syslog.txt
+          ROBOT_OPTIONS: "--variable BROWSER:chrome"
         run: |
+          export ROBOT_SYSLOG_FILE=output/syslog.txt
+          export ROBOT_OPTIONS="--variable BROWSER:chrome"
           robot Testes/
