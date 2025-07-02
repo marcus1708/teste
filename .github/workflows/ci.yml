@@ -1,0 +1,42 @@
+name: Robot Framework Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install robotframework
+          pip install robotframework-seleniumlibrary
+          pip install selenium
+          pip install webdrivermanager
+          webdrivermanager chrome --linkpath /usr/local/bin
+
+      - name: Start Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          Xvfb :99 &
+          export DISPLAY=:99
+        shell: bash
+
+      - name: Run Robot Framework tests
+        env:
+          DISPLAY: :99
+        run: |
+          robot Testes/
