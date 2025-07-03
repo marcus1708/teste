@@ -9,8 +9,12 @@ ${chrome options}    --no-sandbox --disable-dev-shm-usage --headless
 *** Keywords ***
 
 Abrir o Navegador
-    Open Browser    ${url}    chrome    options=add_argument(${chrome options})
+    Open Browser    ${url}    chrome
+    ...    options=add_argument(--no-sandbox)
+    ...    options=add_argument(--disable-dev-shm-usage)
+    ...    options=add_argument(--headless)
     Maximize Browser Window
+
 
 Fechar o Navegador 
     Close Browser
