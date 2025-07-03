@@ -41,4 +41,4 @@ jobs:
           DISPLAY: :99
         run: |
           Xvfb :99 &
-          robot Testes/
+          robot Robot/Testes/
